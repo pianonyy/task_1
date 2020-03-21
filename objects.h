@@ -28,24 +28,36 @@ struct Material {
 // 	const double SELF_AVOID_T = 1e-2;
 // };
 
-class Sphere {
+class Object
+{
+public:
+	Material material;
+	Object() = default;
+	Object(const Material& m) : material(m) { }
+	virtual Vec3f get_normal(const Vec3f& vec) const = 0;
+	virtual bool ray_intersect(const Ray& ray, float &t) const = 0;
+};
+
+class Sphere : public Object {
 	public:
     Vec3f Center;
     float Radius;
-		Material material;
 
-
-    Sphere(Vec3f center, const float radius, Material texture) : Center(center), Radius(radius), material(texture) {}
+    Sphere(Vec3f center, const float radius, Material texture) :
+		Object(texture),
+		Center(center),
+		Radius(radius)
+		{}
 
     Vec3f get_center() const{
     	return Center;
     }
 
     Vec3f get_normal(const Vec3f& p) const {
-			return ((p - Center)*(-1/Radius)).normalize();// *(-1 / Radius);
+			return ((p - Center)*(-1)).normalize();// *(-1 / Radius);
     }
 
-    bool ray_intersect(const Ray& ray, double &t) const {
+    bool ray_intersect(const Ray& ray, float &t) const {
         Vec3f v = Center - ray.origin;
 				float tca = v * ray.direction;
 				float d2 = v * v - tca * tca;
