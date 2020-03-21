@@ -1,6 +1,7 @@
 #ifndef __GEOMETRY_H__
 #define __GEOMETRY_H__
 
+#include <inttypes.h>
 #include <cmath>
 #include <vector>
 #include <cassert>
@@ -10,25 +11,53 @@ template <size_t DIM, typename T> struct vec {
     vec() { for (size_t i=DIM; i--; data_[i] = T()); }
           T& operator[](const size_t i)       { assert(i<DIM); return data_[i]; }
     const T& operator[](const size_t i) const { assert(i<DIM); return data_[i]; }
+    vec(const vec& v)
+    {
+        *this = v;
+    }
+    vec& operator=(const vec& v)
+    {
+        for (size_t i=DIM; i--; data_[i] = v[i]);
+        return *this;
+    }
+    T length() const
+    {
+        T l{};
+        for (size_t i=DIM; i--; l += data_[i] * data_[i]);
+        return sqrt(l);
+    }
 private:
     T data_[DIM];
 };
 
 
-typedef vec<3, float> Vec3f;
 
-typedef vec<4, float> Vec4f;
 
 
 template <typename T> struct vec<3,T> {
+    const size_t DIM = 3;
     vec() : x(T()), y(T()), z(T()) {}
     vec(T X, T Y, T Z) : x(X), y(Y), z(Z) {}
+    vec(const vec& v) : x(v.x), y(v.y), z(v.z) { }
           T& operator[](const size_t i)       { assert(i<3); return i<=0 ? x : (1==i ? y : z); }
     const T& operator[](const size_t i) const { assert(i<3); return i<=0 ? x : (1==i ? y : z); }
     float norm() { return std::sqrt(x*x+y*y+z*z); }
     vec<3,T> & normalize(T l=1) { *this = (*this)*(l/norm()); return *this; }
     T x,y,z;
+    T length() const
+    {
+        T l = x * x + y * y + z * z;
+        return sqrt(l);
+    }
+    vec& operator=(const vec& v)
+    {
+        x = v.x, y = v.y, z = v.z;
+        return *this;
+    }
+
 };
+
+typedef vec<3, float> Vec3f;
 
 template <typename T> struct vec<4,T> {
     vec() : x(T()), y(T()), z(T()), w(T()) {}
@@ -37,6 +66,7 @@ template <typename T> struct vec<4,T> {
     const T& operator[](const size_t i) const { assert(i<4); return i<=0 ? x : (1==i ? y : (2==i ? z : w)); }
     T x,y,z,w;
 };
+typedef vec<4, float> Vec4f;
 
 template<size_t DIM,typename T> T operator*(const vec<DIM,T>& lhs, const vec<DIM,T>& rhs) {
     T ret = T();

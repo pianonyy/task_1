@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Wextra -pedantic -std=c++11 -O3 -fopenmp  -rdynamic CMakeFiles/ray_tracing.dir/main.cpp.o  -o ray_tracing 

@@ -22,10 +22,10 @@ int main() {
 
   Material glass(1.5, Vec4f(0.0,  0.5, 0.1, 0.8), Vec3f(0.6, 0.7, 0.8),  125.);
 
-  Sphere sphere1 (Vec3f(200, 250, 220), 2, Vec3f(255,100,40), glass);
+  Sphere sphere1 (Vec3f(200, 250, 220), 2, glass);
 
 
-	Lightsource light1 = Lightsource(Vec3f(10,10, 10), 23);
+	LightSource light1 = LightSource(Vec3f(10,10, 10), 23);
   //Lightsource light2 = Lightsource(Vec3f(100,255, 0), 23);
   //Lightsource light3 = Lightsource(Vec3f(255,255, 255), 12);
 
