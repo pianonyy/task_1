@@ -95,7 +95,7 @@ class Scene {
 		Vec3f ray_origin    = Vec3f(0, 0, 0);
 		Vec3f ray_direction = Vec3f(x, y, z).normalize();
 
-		return trace_ray(Ray(ray_origin, ray_direction), objects, 4);
+		return trace_ray(Ray(ray_origin, ray_direction), objects, 0);
 	}
 
 	Vec3f trace_ray(const Ray &ray, const std::vector<Object*> &spheres, int depth) {
