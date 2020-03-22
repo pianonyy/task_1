@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "scene.h"
+
 struct Material {
     Material(const float r, const Vec4f &a, const Vec3f &color, const float spec) : refractive_index(r), albedo(a), diffuse_color(color), specular_exponent(spec) {}
     Material() : refractive_index(1), albedo(1,0,0,0), diffuse_color(), specular_exponent() {}
@@ -54,7 +55,7 @@ class Sphere : public Object {
     }
 
     Vec3f get_normal(const Vec3f& p) const {
-			return ((p - Center)*(-1)).normalize();// *(-1 / Radius);
+			return (p - Center).normalize(); 
     }
 
     bool ray_intersect(const Ray& ray, float &t) const {
@@ -73,75 +74,75 @@ class Sphere : public Object {
 		}
 };
 
-/*
-class Cylinder : public Object {
-	Vec3f center;
-	Vec3f direction;
-	double radius;
-	double height;
 
-public:
-	Cylinder(Vec3f center_, Vec3f direction_, double radius_, double height_, Color_t color, Material texture = MAT) : center(center_), direction(direction_.normalize()), radius(radius_), height(height_), Object(color, texture) {}
+// class Cylinder : public Object {
+// 	Vec3f center;
+// 	Vec3f direction;
+// 	float radius;
+// 	float height;
+//
+// public:
+// 	Cylinder(Vec3f center_, Vec3f direction_, float radius_, float height_, Material texture = MAT) : center(center_), direction(direction_.normalize()), radius(radius_), height(height_), Object(color, texture) {}
+//
+// 	Vec3f get_center() const {
+// 		return center;
+// 	}
+//
+// 	Vec3f get_normal(const Vec3f& p) const {
+// 		Vec3f to_center = p - center;
+// 		return ((to_center - direction*(to_center.dot(direction))).normalize());
+// 	}
+//
+// 	bool intersect(const Ray & ray, double& t) const {
+// 		Vec3f rel_origin = ray.origin - center;
+//
+// 		const double directions_dot = ray.direction.dot(direction);
+// 		const double a = 1 - directions_dot* directions_dot;
+// 		const double b = 2 * (rel_origin.dot(ray.direction) - directions_dot *rel_origin.dot(direction));
+// 		const double c = rel_origin.dot(rel_origin) -rel_origin.dot(direction)* rel_origin.dot(direction) - radius * radius;
+//
+// 		double delta = b * b - 4 * a * c;
+//
+// 		if (delta < 0) {
+// 			t = FLT_MAX; // no intersection, at 'infinity'
+// 			return false;
+// 		}
+//
+// 		const double sqrt_delta_2a = sqrt(delta) / (2 * a);
+// 		double t1 = (-b) / (2*a);
+// 		const double t2 = t1 + sqrt_delta_2a;
+// 		t1 -= sqrt_delta_2a;
+//
+// 		if (t2 < SELF_AVOID_T) { // the cylinder is behind us
+// 			t = FLT_MAX; // no intersection, at 'infinity'
+// 			return false;
+// 		}
+// 		double center_proj = center.dot(direction);
+// 		double t1_proj = ray.get_point(t1).dot(direction);
+// 		if (t1 >= SELF_AVOID_T && t1_proj > center_proj && t1_proj < center_proj+height) {
+// 			t = t1;
+// 			return true;
+// 		}
+// 		double t2_proj = ray.get_point(t2).dot(direction);
+// 		if (t2 >= SELF_AVOID_T && t2_proj > center_proj && t2_proj < center_proj+height) {
+// 			t = t2;
+// 			return true;
+// 		}
+// 		t = FLT_MAX; // no intersection, at 'infinity'
+// 		return false;
+// 	}
 
-	Vec3f get_center() const {
-		return center;
-	}
+// 	Circle bottom_circle() {
+// 		return Circle(center, direction, radius, color, texture);
+// 	}
+// 	Circle top_circle() {
+// 		return Circle(center+direction*height, direction, radius, color, texture);
+// 	}
+// 	static void create_capped_cylinder(Scene& scene) {
+// 		// create a cylinder and 2 circles?
+// 	}
+// };
 
-	Vec3f get_normal(const Vec3f& p) const {
-		Vec3f to_center = p - center;
-		return ((to_center - direction*(to_center.dot(direction))).normalize());
-	}
-
-	bool intersect(const Ray & ray, double& t) const {
-		Vec3f rel_origin = ray.origin - center;
-
-		const double directions_dot = ray.direction.dot(direction);
-		const double a = 1 - directions_dot* directions_dot;
-		const double b = 2 * (rel_origin.dot(ray.direction) - directions_dot *rel_origin.dot(direction));
-		const double c = rel_origin.dot(rel_origin) -rel_origin.dot(direction)* rel_origin.dot(direction) - radius * radius;
-
-		double delta = b * b - 4 * a * c;
-
-		if (delta < 0) {
-			t = FLT_MAX; // no intersection, at 'infinity'
-			return false;
-		}
-
-		const double sqrt_delta_2a = sqrt(delta) / (2 * a);
-		double t1 = (-b) / (2*a);
-		const double t2 = t1 + sqrt_delta_2a;
-		t1 -= sqrt_delta_2a;
-
-		if (t2 < SELF_AVOID_T) { // the cylinder is behind us
-			t = FLT_MAX; // no intersection, at 'infinity'
-			return false;
-		}
-		double center_proj = center.dot(direction);
-		double t1_proj = ray.get_point(t1).dot(direction);
-		if (t1 >= SELF_AVOID_T && t1_proj > center_proj && t1_proj < center_proj+height) {
-			t = t1;
-			return true;
-		}
-		double t2_proj = ray.get_point(t2).dot(direction);
-		if (t2 >= SELF_AVOID_T && t2_proj > center_proj && t2_proj < center_proj+height) {
-			t = t2;
-			return true;
-		}
-		t = FLT_MAX; // no intersection, at 'infinity'
-		return false;
-	}
-	/*
-	Circle bottom_circle() {
-		return Circle(center, direction, radius, color, texture);
-	}
-	Circle top_circle() {
-		return Circle(center+direction*height, direction, radius, color, texture);
-	}
-	static void create_capped_cylinder(Scene& scene) {
-		// create a cylinder and 2 circles?
-	}
-};
-*/
 
 
 // Cone's still not correct.

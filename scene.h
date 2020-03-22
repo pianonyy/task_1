@@ -17,8 +17,8 @@
 class LightSource {
 public:
 	Vec3f position;
-	// Vec3f color;
-	double intensity = 100;
+
+	double intensity = 100.0;
   LightSource() : position{} { }
 	LightSource(const Vec3f &position_, double intensity_= 100.0) : position(position_), intensity(intensity_) {}
 };
@@ -42,22 +42,24 @@ bool scene_intersect(const Vec3f &orig, const Vec3f &dir, const std::vector<Obje
         if (objects[i]->ray_intersect(Ray(orig, dir), dist_i) && dist_i < object_dist) {
             object_dist = dist_i;
             hit = (orig + dir * dist_i);
+
             N = objects[i]->get_normal(hit);
             material = objects[i]->material;
         }
     }
 
+		//this part draws floor on the picture
     float checkerboard_dist = std::numeric_limits<float>::max();
     if (fabs(dir.y)>1e-3)  {
-        double d = -(orig.y+4)/dir.y; // the checkerboard plane has equation y = -4
-        Vec3f pt = orig + dir*d;
-        if (d>0 && fabs(pt.x)<10 && pt.z<-10 && pt.z>-30 && d<object_dist) {
-            checkerboard_dist = d;
-            hit = pt;
-            N = Vec3f(0,1,0);
-            material.diffuse_color = (int(.5*hit.x+1000) + int(.5*hit.z)) & 1 ? Vec3f(.3, .3, .3) : Vec3f(.3, .2, .1);
-        }
-    }
+         double d = -(orig.y + 4) / dir.y;
+         Vec3f pt = orig + dir*d;
+         if (d > 0 && fabs(pt.x) < 10 && pt.z < -10 && pt.z>-30 && d<object_dist) {
+             checkerboard_dist = d;
+             hit = pt;
+             N = Vec3f(0,1,0);
+             material.diffuse_color = (int(.5*hit.x+1000) + int(.5*hit.z)) & 1 ? Vec3f(.3, .3, .3) : Vec3f(.3, .2, .1);
+         }
+     }
     return std::min(object_dist, checkerboard_dist) < 1000;
 }
 
@@ -101,7 +103,7 @@ class Scene {
     Material material;
 
 		if (depth > 4 || !scene_intersect(ray.origin, ray.direction, this->objects, point, N, material)) {
-        return Vec3f(0.2, 0.7, 0.3); // background color
+        return Vec3f(0.6, 0.2, 0.9); // background color
     }
 
     Vec3f reflect_dir   = reflect(ray.direction, N).normalize();
@@ -125,7 +127,7 @@ class Scene {
         diffuse_light_intensity  += this->light_sources[i].intensity * std::max(0.f, light_dir*N);
         specular_light_intensity += powf(std::max(0.f, -reflect(-light_dir, N)*ray.direction), material.specular_exponent)*(this->light_sources)[i].intensity;
     }
-    return (material.diffuse_color * diffuse_light_intensity * material.albedo[0] + Vec3f(1., 1., 1.)*specular_light_intensity * material.albedo[1] + reflect_color*material.albedo[2] + refract_color);
+    return (material.diffuse_color * diffuse_light_intensity * material.albedo[0] + Vec3f(1., 1., 1.)*specular_light_intensity * material.albedo[1] + reflect_color*material.albedo[2] + refract_color*material.albedo[3]);
   }
 };
 
