@@ -28,15 +28,15 @@ int main() {
   Material      ivory(1.0, Vec4f(0.6,  0.3, 0.1, 0.0), Vec3f(0.4, 0.4, 0.3),   50.);
 
   Sphere sphere1 (Vec3f(7,    5,   -18), 2, red_rubber);
-
+  Cylinder cylinder1 (Vec3f(-3,    0,   -16), Vec3f(0.1,    0.9,   0.8), 3., 4., red_rubber);
   Sphere sphere2 (Vec3f(-3,    0,   -16), 2,     mirror);
 
-	LightSource light1 = LightSource(Vec3f(30, 50, -25), 1.8);
-  LightSource light2 = LightSource(Vec3f(30, -50, 25), 1);
+	LightSource light1 = LightSource(Vec3f(30, 50, -25), 2.8);
+  LightSource light2 = LightSource(Vec3f(30, 50, -25), 2);
   LightSource light3 = LightSource(Vec3f(18,18, -20), 1);
 
   scene.add(&sphere1);
-  scene.add(&sphere2);
+  scene.add(&cylinder1);
 
 
 	scene.add(light1);
@@ -49,17 +49,20 @@ int main() {
 
   for (int i = 0; i < Height; i++) {
     for (int j = 0; j < Width; j++)  {
-      double dir_x = (i + 0.5) - Width / 2.;
-      double dir_y = - (j + 0.5) + Height / 2.;
-      double dir_z = - Height / (2. * tan(fov / 2.));
+      float dir_x = (i + 0.5) - Width / 2.;
+      float dir_y = - (j + 0.5) + Height / 2.;
+      float dir_z = - Height / (2. * tan(fov / 2.));
+
+
       pix_col = scene.trace(dir_x, dir_y, dir_z);
+
       framebuffer[i + j * Width] = pix_col;
 
     }
   }
 
   std::ofstream ofs; // save the framebuffer to file
-  ofs.open("./out3.ppm",std::ios::binary);
+  ofs.open("./out_light3.ppm",std::ios::binary);
   ofs << "P6\n" << Width << " " << Height << "\n255\n";
   for (size_t i = 0; i < Height*Width; ++i) {
       Vec3f &c = framebuffer[i];

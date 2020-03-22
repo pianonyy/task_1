@@ -84,15 +84,29 @@ template<size_t DIM,typename T>vec<DIM,T> operator-(vec<DIM,T> lhs, const vec<DI
     return lhs;
 }
 
-template<size_t DIM,typename T,typename U> vec<DIM,T> operator*(const vec<DIM,T> &lhs, const U& rhs) {
+// template<size_t DIM,typename T> T operator dot(const vec<DIM,T>& rhs) {
+//     T temp = T();
+//     for (size_t i=DIM; i--; temp += this[i]*rhs[i]);
+//     return temp;
+// }
+
+template<size_t DIM,typename T,typename U> vec<DIM,T> operator*( const U& rhs, const vec<DIM,T> &lhs) {
     vec<DIM,T> ret;
     for (size_t i=DIM; i--; ret[i]=lhs[i]*rhs);
     return ret;
 }
 
+template<size_t DIM,typename T,typename U> vec<DIM,T> operator*( const vec<DIM,T> &lhs,  const U& rhs) {
+    vec<DIM,T> ret;
+    for (size_t i=DIM; i--; ret[i]=lhs[i]*rhs);
+    return ret;
+}
+
+
 template<size_t DIM,typename T> vec<DIM,T> operator-(const vec<DIM,T> &lhs) {
     return lhs*T(-1);
 }
+
 
 template <typename T> vec<3,T> cross(vec<3,T> v1, vec<3,T> v2) {
     return vec<3,T>(v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x);

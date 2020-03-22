@@ -10,15 +10,15 @@ public:
     Vec3f origin;
     Vec3f direction;
 
-	Ray(Vec3f ori, Vec3f dir) : origin(ori), direction(dir) {}
+    Ray(Vec3f ori, Vec3f dir) : origin(ori), direction(dir) {}
 
-	// Vec3f get_point(double t) const{
-	// 	return origin + direction * t;
-	// }
-	// Vec3f reflect_by(const Vec3f& normal) const{
-	// 	return direction - normal * normal* direction * 2;
-	// }
-  //
+    Vec3f get_point(double t) const{
+	     return origin + direction * t;
+    }
+    // Vec3f reflect_by(const Vec3f& normal) const{
+    // 	return direction - (normal * direction * 2);
+    // }
+
   // Vec3 get_origin() const {
   //   return origin;
   // }

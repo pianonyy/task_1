@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
-
+#include <float.h>
 #include "scene.h"
 
 struct Material {
@@ -25,8 +25,8 @@ struct Material {
 //
 // 	Object(Vec3f color, Material texture) : color(color), texture(texture) {}
 // 	virtual Vec3f get_normal(const Vec3f& p) const = 0;
-// 	virtual bool intersect(const Ray& ray, double& t) const = 0;
-// 	const double SELF_AVOID_T = 1e-2;
+// 	virtual bool intersect(const Ray& ray, float& t) const = 0;
+// 	const float SELF_AVOID_T = 1e-2;
 // };
 
 class Object
@@ -37,6 +37,7 @@ public:
 	Object(const Material& m) : material(m) { }
 	virtual Vec3f get_normal(const Vec3f& vec) const = 0;
 	virtual bool ray_intersect(const Ray& ray, float &t) const = 0;
+  const float SELF_AVOID_T = 1e-2;
 };
 
 class Sphere : public Object {
@@ -55,7 +56,7 @@ class Sphere : public Object {
     }
 
     Vec3f get_normal(const Vec3f& p) const {
-			return (p - Center).normalize(); 
+			return (p - Center).normalize();
     }
 
     bool ray_intersect(const Ray& ray, float &t) const {
@@ -75,62 +76,63 @@ class Sphere : public Object {
 };
 
 
-// class Cylinder : public Object {
-// 	Vec3f center;
-// 	Vec3f direction;
-// 	float radius;
-// 	float height;
-//
-// public:
-// 	Cylinder(Vec3f center_, Vec3f direction_, float radius_, float height_, Material texture = MAT) : center(center_), direction(direction_.normalize()), radius(radius_), height(height_), Object(color, texture) {}
-//
-// 	Vec3f get_center() const {
-// 		return center;
-// 	}
-//
-// 	Vec3f get_normal(const Vec3f& p) const {
-// 		Vec3f to_center = p - center;
-// 		return ((to_center - direction*(to_center.dot(direction))).normalize());
-// 	}
-//
-// 	bool intersect(const Ray & ray, double& t) const {
-// 		Vec3f rel_origin = ray.origin - center;
-//
-// 		const double directions_dot = ray.direction.dot(direction);
-// 		const double a = 1 - directions_dot* directions_dot;
-// 		const double b = 2 * (rel_origin.dot(ray.direction) - directions_dot *rel_origin.dot(direction));
-// 		const double c = rel_origin.dot(rel_origin) -rel_origin.dot(direction)* rel_origin.dot(direction) - radius * radius;
-//
-// 		double delta = b * b - 4 * a * c;
-//
-// 		if (delta < 0) {
-// 			t = FLT_MAX; // no intersection, at 'infinity'
-// 			return false;
-// 		}
-//
-// 		const double sqrt_delta_2a = sqrt(delta) / (2 * a);
-// 		double t1 = (-b) / (2*a);
-// 		const double t2 = t1 + sqrt_delta_2a;
-// 		t1 -= sqrt_delta_2a;
-//
-// 		if (t2 < SELF_AVOID_T) { // the cylinder is behind us
-// 			t = FLT_MAX; // no intersection, at 'infinity'
-// 			return false;
-// 		}
-// 		double center_proj = center.dot(direction);
-// 		double t1_proj = ray.get_point(t1).dot(direction);
-// 		if (t1 >= SELF_AVOID_T && t1_proj > center_proj && t1_proj < center_proj+height) {
-// 			t = t1;
-// 			return true;
-// 		}
-// 		double t2_proj = ray.get_point(t2).dot(direction);
-// 		if (t2 >= SELF_AVOID_T && t2_proj > center_proj && t2_proj < center_proj+height) {
-// 			t = t2;
-// 			return true;
-// 		}
-// 		t = FLT_MAX; // no intersection, at 'infinity'
-// 		return false;
-// 	}
+class Cylinder : public Object {
+    Vec3f center;
+    Vec3f direction;
+    float radius;
+    float height;
+
+public:
+    Cylinder(Vec3f center_, Vec3f direction_, float radius_, float height_, Material texture) : center(center_), direction(direction_.normalize()), radius(radius_), height(height_), Object(texture) {}
+
+ 	  Vec3f get_center() const {
+ 		   return center;
+    }
+
+ 	  Vec3f get_normal(const Vec3f& p) const {
+ 		   Vec3f to_center = p - center;
+ 		   return ( (to_center - (to_center * direction) * direction).normalize() );
+ 	  }
+
+ 	  bool ray_intersect(const Ray & ray, float& t) const {
+ 		  Vec3f rel_origin = ray.origin - center;
+
+   	  const float directions_dot = ray.direction * direction;
+      const float a = 1 - directions_dot* directions_dot;
+      const float b = 2 * ( (rel_origin * ray.direction) - (rel_origin * direction) * directions_dot );
+      const float c = (rel_origin * rel_origin) - (rel_origin* direction) * (rel_origin * direction) - radius * radius;
+
+      float delta = b * b - 4 * a * c;
+
+      if (delta < 0) {
+      	t = FLT_MAX; // no intersection, at 'infinity'
+      	return false;
+      }
+
+      const float sqrt_delta_2a = sqrt(delta) / (2 * a);
+      float t1 = (-b) / (2*a);
+      const float t2 = t1 + sqrt_delta_2a;
+      t1 -= sqrt_delta_2a;
+
+      if (t2 < SELF_AVOID_T) { // the cylinder is behind us
+      	t = FLT_MAX; // no intersection, at 'infinity'
+      	return false;
+      }
+      float center_proj = (center * direction);
+      float t1_proj = (ray.get_point(t1) * direction);
+      if (t1 >= SELF_AVOID_T && t1_proj > center_proj && t1_proj < center_proj+height) {
+      	t = t1;
+      	return true;
+      }
+      float t2_proj = (ray.get_point(t2) * direction);
+      if (t2 >= SELF_AVOID_T && t2_proj > center_proj && t2_proj < center_proj+height) {
+      	t = t2;
+      	return true;
+      }
+      t = FLT_MAX; // no intersection, at 'infinity'
+      return false;
+ 	  }
+};
 
 // 	Circle bottom_circle() {
 // 		return Circle(center, direction, radius, color, texture);
@@ -140,8 +142,7 @@ class Sphere : public Object {
 // 	}
 // 	static void create_capped_cylinder(Scene& scene) {
 // 		// create a cylinder and 2 circles?
-// 	}
-// };
+//}
 
 
 
@@ -150,11 +151,11 @@ class Sphere : public Object {
 class Cone : public Object {
 	Vec3f center;
 	Vec3f direction;
-	double slope;
-	double height;
+	float slope;
+	float height;
 
 public:
-	Cone(Vec3f center_, Vec3f direction_, double slope_, double height_, Color_t color, Texture_t texture = MAT) : center(center_), direction(direction_.normalize()), slope(slope_), height(height_), Object(color, texture) {}
+	Cone(Vec3f center_, Vec3f direction_, float slope_, float height_, Color_t color, Texture_t texture = MAT) : center(center_), direction(direction_.normalize()), slope(slope_), height(height_), Object(color, texture) {}
 
 	Vec3f get_center() const {
 		return center;
@@ -165,37 +166,37 @@ public:
 		return ((to_center - direction * (to_center*  direction - slope)).normalize());
 	}
 
-	bool intersect(const Ray & ray, double& t) const {
+	bool ray_intersect(const Ray & ray, float& t) const {
 		Vec3f rel_origin = ray.origin - center;
 
-		const double directions_dot = ray.direction.dot(direction);
-		const double a = 1 - slope*directions_dot * directions_dot;
-		const double b = 2 * (rel_origin.dot(ray.direction) - slope*directions_dot * rel_origin.dot(direction));
-		const double c = rel_origin.dot(rel_origin) - slope*rel_origin.dot(direction) * rel_origin.dot(direction)-50.0*50.0;
+		const float directions_dot = ray.direction.dot(direction);
+		const float a = 1 - slope*directions_dot * directions_dot;
+		const float b = 2 * (rel_origin.dot(ray.direction) - slope*directions_dot * rel_origin.dot(direction));
+		const float c = rel_origin.dot(rel_origin) - slope*rel_origin.dot(direction) * rel_origin.dot(direction)-50.0*50.0;
 
-		double delta = b * b - 4 * a * c;
+		float delta = b * b - 4 * a * c;
 
 		if (delta < 0) { // was 1e-4, why?
 			t = FLT_MAX; // no intersection, at 'infinity'
 			return false;
 		}
 
-		const double sqrt_delta_2a = sqrt(delta) / (2 * a);
-		double t1 = (-b) / (2 * a);
-		const double t2 = t1 + sqrt_delta_2a;
+		const float sqrt_delta_2a = sqrt(delta) / (2 * a);
+		float t1 = (-b) / (2 * a);
+		const float t2 = t1 + sqrt_delta_2a;
 		t1 -= sqrt_delta_2a;
 
 		if (t2 < SELF_AVOID_T) { // the cylinder is behind us
 			t = FLT_MAX; // no intersection, at 'infinity'
 			return false;
 		}
-		double center_proj = center.dot(direction);
-		double t1_proj = ray.get_point(t1).dot(direction);
+		float center_proj = center.dot(direction);
+		float t1_proj = ray.get_point(t1).dot(direction);
 		if (t1 >= SELF_AVOID_T && t1_proj > center_proj && t1_proj < center_proj + height) {
 			t = t1;
 			return true;
 		}
-		double t2_proj = ray.get_point(t2).dot(direction);
+		float t2_proj = ray.get_point(t2).dot(direction);
 		if (t2 >= SELF_AVOID_T && t2_proj > center_proj && t2_proj < center_proj + height) {
 			t = t2;
 			return true;
@@ -224,8 +225,8 @@ public:
 		return direction;
 	}
 
-	virtual bool intersect(const Ray& ray, double& t) const {
-		double directions_dot_prod = direction.dot(ray.direction);
+	virtual bool intersect(const Ray& ray, float& t) const {
+		float directions_dot_prod = direction.dot(ray.direction);
 		if (directions_dot_prod == 0) {// the plane and ray are parallel
 			t = FLT_MAX; // no intersection, at 'infinity'
 			return false;
@@ -244,11 +245,11 @@ public:
 
 
 // class Circle : public Plane {
-// 	double radius;
+// 	float radius;
 // public:
-// 	Circle(Vec3f center_, Vec3f direction_, double radius_, Color_t color, Texture_t texture = MAT) : radius(radius_), Plane(center_, direction_, color, texture) {}
+// 	Circle(Vec3f center_, Vec3f direction_, float radius_, Color_t color, Texture_t texture = MAT) : radius(radius_), Plane(center_, direction_, color, texture) {}
 //
-// 	bool intersect(const Ray & ray, double& t) const {
+// 	bool intersect(const Ray & ray, float& t) const {
 // 		if (!Plane::intersect(ray, t)) { // the ray doesnt even hit the plane
 // 			return false;
 // 		}
