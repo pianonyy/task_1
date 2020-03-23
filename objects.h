@@ -208,14 +208,14 @@ public:
 
 */
 
-/*
+
 class Plane : public Object {
 protected:
 	Vec3f center;
 	Vec3f direction;
 
 public:
-	Plane(Vec3f center_, Vec3f direction_, Color_t color, Texture_t texture = MAT) : center(center_), direction(direction_.normalize()), Object(color, texture) {}
+	Plane(Vec3f center_, Vec3f direction_, Material texture) : center(center_), direction(direction_.normalize()), Object(texture) {}
 
 	Vec3f get_center() const {
 		return center;
@@ -225,13 +225,14 @@ public:
 		return direction;
 	}
 
-	virtual bool intersect(const Ray& ray, float& t) const {
-		float directions_dot_prod = direction.dot(ray.direction);
+	virtual bool ray_intersect(const Ray& ray, float& t) const {
+		float directions_dot_prod = (direction * ray.direction);
 		if (directions_dot_prod == 0) {// the plane and ray are parallel
 			t = FLT_MAX; // no intersection, at 'infinity'
 			return false;
 		}
-		t = direction.dot(center - ray.origin) / directions_dot_prod;
+		t = direction * (center - ray.origin) / directions_dot_prod;
+
 
 		if (t < SELF_AVOID_T) { // the plane is behind the ray
 			t = FLT_MAX;
@@ -241,7 +242,7 @@ public:
 		return true;
 	}
 };
-*/
+
 
 
 // class Circle : public Plane {
