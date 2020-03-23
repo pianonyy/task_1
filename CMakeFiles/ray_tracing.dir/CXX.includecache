@@ -19,6 +19,8 @@ iostream
 -
 fstream
 -
+unordered_map
+-
 
 /home/bondarevivan/Github/task_1/objects.h
 vect.h
@@ -30,6 +32,8 @@ cmath
 vector
 -
 iostream
+-
+float.h
 -
 scene.h
 /home/bondarevivan/Github/task_1/scene.h

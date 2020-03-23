@@ -721,3 +721,183 @@ make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
 
 Source file was:
 int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fc44b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fc44b.dir/build.make CMakeFiles/cmTC_fc44b.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fc44b.dir/src.cxx.o
+/usr/bin/c++    -Dflag_supported   -Wall -o CMakeFiles/cmTC_fc44b.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_fc44b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fc44b.dir/link.txt --verbose=1
+/usr/bin/c++   -Dflag_supported    -rdynamic CMakeFiles/cmTC_fc44b.dir/src.cxx.o  -o cmTC_fc44b 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_298b6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_298b6.dir/build.make CMakeFiles/cmTC_298b6.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_298b6.dir/src.cxx.o
+/usr/bin/c++    -Wall -Dflag_supported   -Wextra -o CMakeFiles/cmTC_298b6.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_298b6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_298b6.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Dflag_supported    -rdynamic CMakeFiles/cmTC_298b6.dir/src.cxx.o  -o cmTC_298b6 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dea32/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dea32.dir/build.make CMakeFiles/cmTC_dea32.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_dea32.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -Dflag_supported   -pedantic -o CMakeFiles/cmTC_dea32.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_dea32
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dea32.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -Dflag_supported    -rdynamic CMakeFiles/cmTC_dea32.dir/src.cxx.o  -o cmTC_dea32 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1cd44/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1cd44.dir/build.make CMakeFiles/cmTC_1cd44.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1cd44.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -pedantic -Dflag_supported   -std=c++11 -o CMakeFiles/cmTC_1cd44.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_1cd44
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1cd44.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -pedantic -Dflag_supported    -rdynamic CMakeFiles/cmTC_1cd44.dir/src.cxx.o  -o cmTC_1cd44 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0aa7f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0aa7f.dir/build.make CMakeFiles/cmTC_0aa7f.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0aa7f.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -pedantic -std=c++11 -Dflag_supported   -O3 -o CMakeFiles/cmTC_0aa7f.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_0aa7f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0aa7f.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -pedantic -std=c++11 -Dflag_supported    -rdynamic CMakeFiles/cmTC_0aa7f.dir/src.cxx.o  -o cmTC_0aa7f 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7ea9a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7ea9a.dir/build.make CMakeFiles/cmTC_7ea9a.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7ea9a.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -pedantic -std=c++11 -O3 -Dflag_supported   -fopenmp -o CMakeFiles/cmTC_7ea9a.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_7ea9a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7ea9a.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -pedantic -std=c++11 -O3 -Dflag_supported    -rdynamic CMakeFiles/cmTC_7ea9a.dir/src.cxx.o  -o cmTC_7ea9a 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6a1bf/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6a1bf.dir/build.make CMakeFiles/cmTC_6a1bf.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_6a1bf.dir/src.cxx.o
+/usr/bin/c++    -Dflag_supported   -Wall -o CMakeFiles/cmTC_6a1bf.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_6a1bf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6a1bf.dir/link.txt --verbose=1
+/usr/bin/c++   -Dflag_supported    -rdynamic CMakeFiles/cmTC_6a1bf.dir/src.cxx.o  -o cmTC_6a1bf 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c9ff1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c9ff1.dir/build.make CMakeFiles/cmTC_c9ff1.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c9ff1.dir/src.cxx.o
+/usr/bin/c++    -Wall -Dflag_supported   -Wextra -o CMakeFiles/cmTC_c9ff1.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_c9ff1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c9ff1.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Dflag_supported    -rdynamic CMakeFiles/cmTC_c9ff1.dir/src.cxx.o  -o cmTC_c9ff1 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_906c7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_906c7.dir/build.make CMakeFiles/cmTC_906c7.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_906c7.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -Dflag_supported   -pedantic -o CMakeFiles/cmTC_906c7.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_906c7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_906c7.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -Dflag_supported    -rdynamic CMakeFiles/cmTC_906c7.dir/src.cxx.o  -o cmTC_906c7 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_68713/fast"
+/usr/bin/make -f CMakeFiles/cmTC_68713.dir/build.make CMakeFiles/cmTC_68713.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_68713.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -pedantic -Dflag_supported   -std=c++11 -o CMakeFiles/cmTC_68713.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_68713
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_68713.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -pedantic -Dflag_supported    -rdynamic CMakeFiles/cmTC_68713.dir/src.cxx.o  -o cmTC_68713 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d477b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d477b.dir/build.make CMakeFiles/cmTC_d477b.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d477b.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -pedantic -std=c++11 -Dflag_supported   -O3 -o CMakeFiles/cmTC_d477b.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_d477b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d477b.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -pedantic -std=c++11 -Dflag_supported    -rdynamic CMakeFiles/cmTC_d477b.dir/src.cxx.o  -o cmTC_d477b 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test flag_supported succeeded with the following output:
+Change Dir: /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1ae3d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1ae3d.dir/build.make CMakeFiles/cmTC_1ae3d.dir/build
+make[1]: Entering directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1ae3d.dir/src.cxx.o
+/usr/bin/c++    -Wall -Wextra -pedantic -std=c++11 -O3 -Dflag_supported   -fopenmp -o CMakeFiles/cmTC_1ae3d.dir/src.cxx.o -c /home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_1ae3d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1ae3d.dir/link.txt --verbose=1
+/usr/bin/c++   -Wall -Wextra -pedantic -std=c++11 -O3 -Dflag_supported    -rdynamic CMakeFiles/cmTC_1ae3d.dir/src.cxx.o  -o cmTC_1ae3d 
+make[1]: Leaving directory '/home/bondarevivan/Github/task_1/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }

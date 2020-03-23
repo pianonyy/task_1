@@ -10,6 +10,55 @@
 
 using namespace std;
 
+class Image
+{
+    Vec3f* colors;
+    struct Proxy
+    {
+        Vec3f* row;
+        Vec3f& operator[](int i)
+        {
+            return row[i];
+        }
+    } proxy;
+    int w;
+    int h;
+public:
+    Image(vector<Vec3f>& c, int w, int h) : colors(&c[0]), w(w), h(h) { }
+    Proxy& operator[](int i)
+    {
+        proxy.row = &(colors[i * w]);
+        return proxy;
+    }
+};
+
+void make_norm(vector<Vec3f>& frame, int w, int h)
+{
+    Image image(frame, w, h);
+    const int COUNT_DIR = 8;
+    int dx[] = { 1, 1, 1, 0, 0, -1, -1, -1 };
+    int dy[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
+    auto fr = frame;
+    Image copy(fr, w, h);
+    for (int i = 1; (i + 1) < w; ++i)
+        for (int j = 1; (j + 1) < h; ++j)
+        {
+            bool flag = true;
+            Vec3f sum{};
+            for (int k = 0; k < COUNT_DIR; ++k)
+            {
+                int ni = i + dx[k];
+                int nj = j + dy[k];
+                if (ni < 0 || ni >= w || nj < 0 || nj >= h)
+                    flag = false;
+                sum = sum + copy[ni][nj];
+            }
+            if (flag)
+            {
+                image[i][j] = sum * 0.25;
+            }
+        }
+}
 
 int main(int argc, const char** argv) {
 
@@ -31,7 +80,7 @@ int main(int argc, const char** argv) {
     }
   }
 
-  std::string outFilePath = "zout.ppm";
+  std::string outFilePath = "out.ppm";
   if(cmdLineParams.find("-out") != cmdLineParams.end())
     outFilePath = cmdLineParams["-out"];
 
@@ -155,7 +204,7 @@ int main(int argc, const char** argv) {
   //     framebuffer_out[3 * (Width * j + i)].z = bSum;
   //   }
   // }
-
+  //make_norm(framebuffer, Width, Height);
 
   std::ofstream ofs; // save the framebuffer to file
   ofs.open(outFilePath,std::ios::binary);
