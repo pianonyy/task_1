@@ -102,69 +102,70 @@ int main(int argc, const char** argv) {
   }
 
   //smooth picture
-  int ker[3][3];
-  for (int i = 0; i < 3; i++){
-    for (int j = 0; j < 3; j++){
-      if ((i == 0 && j == 0) || (i == 0 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 2))
-        ker[i][j] = 1;
-      else
-        ker[i][j] = 0;
-    }
-  }
-
-  for (int i = 0; i < Height; i++) {
-    for (int j = 0; j < Width; j++) {
-      float rSum = 0.0;
-      float gSum = 0.0;
-      float bSum = 0.0;
-      float kSum = 0.0;
-      for(int k = 0; k < 3; k++){
-        for(int p = 0; p < 3; p++){
-          int pixel_pos_x = i + (k - (3 / 2));
-          int pixel_pos_y = j + (p - (3 / 3));
-          if ((pixel_pos_x < 0) || (pixel_pos_x >= Width) || (pixel_pos_x < 0) || (pixel_pos_x >= Height))
-            continue;
-          float red = framebuffer[3 * (Width * pixel_pos_y + pixel_pos_x)].x;
-          float green = framebuffer[3 * (Width * pixel_pos_y + pixel_pos_x)].y;
-          float blue = framebuffer[3 * (Width * pixel_pos_y + pixel_pos_x)].z;
-
-          rSum += red * ker[i][j];
-          gSum += green * ker[i][j];
-          bSum += blue * ker[i][j];
-
-          kSum += ker[i][j];
-        }
-      }
-      if (kSum <= 0) kSum = 1;
-
-      rSum /= kSum;
-      if (rSum < 0) rSum = 0;
-      if (rSum > 255) rSum = 255;
-
-      gSum /= kSum;
-      if (gSum < 0) gSum = 0;
-      if (gSum > 255) gSum = 255;
-
-      bSum /= kSum;
-      if (bSum < 0) bSum = 0;
-      if (bSum > 255) bSum = 255;
-
-      framebuffer_out[3 * (Width * j + i)].x = rSum;
-      framebuffer_out[3 * (Width * j + i)].y = gSum;
-      framebuffer_out[3 * (Width * j + i)].z = bSum;
-    }
-  }
+  // int ker[3][3];
+  // for (int i = 0; i < 3; i++){
+  //   for (int j = 0; j < 3; j++){
+  //     if ((i == 0 && j == 0) || (i == 0 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 2))
+  //       ker[i][j] = 1;
+  //     else
+  //       ker[i][j] = 0;
+  //   }
+  // }
+  //
+  // for (int i = 0; i < Height; i++) {
+  //   for (int j = 0; j < Width; j++) {
+  //     float rSum = 0.0;
+  //     float gSum = 0.0;
+  //     float bSum = 0.0;
+  //     float kSum = 0.0;
+  //     for(int k = 0; k < 3; k++){
+  //       for(int p = 0; p < 3; p++){
+  //         int pixel_pos_x = i + (k - (3 / 2));
+  //         int pixel_pos_y = j + (p - (3 / 3));
+  //         if ((pixel_pos_x < 0) || (pixel_pos_x >= Width) || (pixel_pos_x < 0) || (pixel_pos_x >= Height)
+  //               ||(pixel_pos_y < 0) || (pixel_pos_y >= Width) || (pixel_pos_y < 0) || (pixel_pos_y >= Height) )
+  //           continue;
+  //         float red = framebuffer[3 * (Width * pixel_pos_y + pixel_pos_x)].x;
+  //         float green = framebuffer[3 * (Width * pixel_pos_y + pixel_pos_x)].y;
+  //         float blue = framebuffer[ 3 *(Width * pixel_pos_y + pixel_pos_x)].z;
+  //
+  //         rSum += red * ker[i][j];
+  //         gSum += green * ker[i][j];
+  //         bSum += blue * ker[i][j];
+  //
+  //         kSum += ker[i][j];
+  //       }
+  //     }
+  //     if (kSum <= 0) kSum = 1;
+  //
+  //     rSum /= kSum;
+  //     if (rSum < 0) rSum = 0;
+  //     if (rSum > 255) rSum = 255;
+  //
+  //     gSum /= kSum;
+  //     if (gSum < 0) gSum = 0;
+  //     if (gSum > 255) gSum = 255;
+  //
+  //     bSum /= kSum;
+  //     if (bSum < 0) bSum = 0;
+  //     if (bSum > 255) bSum = 255;
+  //
+  //     framebuffer_out[3 * (Width * j + i)].x = rSum;
+  //     framebuffer_out[3 * (Width * j + i)].y = gSum;
+  //     framebuffer_out[3 * (Width * j + i)].z = bSum;
+  //   }
+  // }
 
 
   std::ofstream ofs; // save the framebuffer to file
   ofs.open(outFilePath,std::ios::binary);
   ofs << "P6\n" << Width << " " << Height << "\n255\n";
   for (size_t i = 0; i < Height * Width; ++i) {
-      Vec3f &c = framebuffer_out[i];
+      Vec3f &c = framebuffer[i];
       float max = std::max(c[0], std::max(c[1], c[2]));
       if (max>1) c = c*(1. / max);
       for (size_t j = 0; j < 3; j++) {
-          ofs << (char)(255 * std::max(0.f, std::min(1.f, framebuffer_out[i][j])));
+          ofs << (char)(255 * std::max(0.f, std::min(1.f, framebuffer[i][j])));
       }
   }
   ofs.close();
