@@ -1,0 +1,3 @@
+/home/bondarevivan/Github/task_1/CMakeFiles/rebuild_cache.dir
+/home/bondarevivan/Github/task_1/CMakeFiles/ray_tracing.dir
+/home/bondarevivan/Github/task_1/CMakeFiles/edit_cache.dir
