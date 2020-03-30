@@ -1,3 +1,5 @@
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 #include "scene.h"
 #include "float.h"
 #include "objects.h"
@@ -7,58 +9,12 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
+#include <algorithm>
+
+
 
 using namespace std;
 
-class Image
-{
-    Vec3f* colors;
-    struct Proxy
-    {
-        Vec3f* row;
-        Vec3f& operator[](int i)
-        {
-            return row[i];
-        }
-    } proxy;
-    int w;
-    int h;
-public:
-    Image(vector<Vec3f>& c, int w, int h) : colors(&c[0]), w(w), h(h) { }
-    Proxy& operator[](int i)
-    {
-        proxy.row = &(colors[i * w]);
-        return proxy;
-    }
-};
-
-void make_norm(vector<Vec3f>& frame, int w, int h)
-{
-    Image image(frame, w, h);
-    const int COUNT_DIR = 8;
-    int dx[] = { 1, 1, 1, 0, 0, -1, -1, -1 };
-    int dy[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
-    auto fr = frame;
-    Image copy(fr, w, h);
-    for (int i = 1; (i + 1) < w; ++i)
-        for (int j = 1; (j + 1) < h; ++j)
-        {
-            bool flag = true;
-            Vec3f sum{};
-            for (int k = 0; k < COUNT_DIR; ++k)
-            {
-                int ni = i + dx[k];
-                int nj = j + dy[k];
-                if (ni < 0 || ni >= w || nj < 0 || nj >= h)
-                    flag = false;
-                sum = sum + copy[ni][nj];
-            }
-            if (flag)
-            {
-                image[i][j] = sum * 0.25;
-            }
-        }
-}
 
 int main(int argc, const char** argv) {
 
@@ -80,7 +36,7 @@ int main(int argc, const char** argv) {
     }
   }
 
-  std::string outFilePath = "out.ppm";
+  std::string outFilePath = "smooth1.ppm";
   if(cmdLineParams.find("-out") != cmdLineParams.end())
     outFilePath = cmdLineParams["-out"];
 
@@ -112,41 +68,84 @@ int main(int argc, const char** argv) {
   Material red_rubber(1.0, Vec4f(0.9,  0.1, 0.0, 0.0), Vec3f(0.3, 0.1, 0.1),   50.);
   Material      ivory(1.0, Vec4f(0.6,  0.3, 0.1, 0.0), Vec3f(0.4, 0.4, 0.3),   50.);
 
+  Material     mirror_new(1.0, Vec4f(0.0, 10.0, 0.8, 0.0), Vec3f(1.0, 1.0, 1.0), 700.);
   Sphere sphere1 (Vec3f(7,    5,   -18), 2, mirror);
-  Cylinder cylinder1 (Vec3f(-3,    0,   -16), Vec3f(0.1,    0.9,   0.8), 3., 4., red_rubber);
+  Cylinder cylinder1 (Vec3f(2,    0,   -16), Vec3f(0.1,    0.9,   0.8), 3., 4., red_rubber);
   Sphere sphere2 (Vec3f(-3,    0,   -16), 2,     mirror);
   Plane plane1 (Vec3f(-7.0,    -7.0,   3.0), Vec3f(0.0, 1.0, 0.0 ), glass);
 
-  Sphere sphere3 (Vec3f(0.0, 1.5, 0.5), 1.5,     glass);
+  Plane plane2 (Vec3f(-7.0,    -7.0,   3.0), Vec3f(1.0, 0.0, 0.0 ), ivory);
+  Plane plane3 (Vec3f(-2.0,    0.0,   3.0), Vec3f(4.0, 0.0, 0.0 ), mirror);
+
+  Sphere sphere3 (Vec3f(-3,    -0.5,   -9), 0.5,    glass);
 	LightSource light1 = LightSource(Vec3f(-30, 50,  25), 5.8);
   LightSource light2 = LightSource(Vec3f( 30, 50, -25), 2);
   LightSource light3 = LightSource(Vec3f( 18, 18, -20), 1);
 
+  LightSource light4 = LightSource(Vec3f( 20, 20, -20), 9);
+
   scene.add(&sphere1);
   scene.add(&cylinder1);
   scene.add(&sphere3);
-  //scene.add(&plane1);
+  //scene.add(&plane2);
+  //scene.add(&plane3);
 
 	scene.add(light1);
-  //scene.add(light2);
-  //scene.add(light3);
-
+  // scene.add(light2);
+  // scene.add(light3);
+  scene.add(light4);
 //loading picture in ppm format
 
 
-  float eps = 0.9;
-  for (int i = 0; i < Height; i++) {
-    for (int j = 0; j < Width; j++)  {
+  // float eps = 0.9;
+  // for (int j = 0; j < Height; j++) {
+  //   for (int i = 0; i < Width; i++)  {
+  //     float dir_x = 0.0;
+  //     float dir_y = 0.0;
+  //     float dir_z = 0.0;
+  //
+  //     dir_x += (i + 0.5) - Width / 2.;
+  //     dir_y += - (j + 0.5) + Height / 2.;
+  //     dir_z += - Height / (2. * tan(fov / 2.));
+  //
+  //     pix_col = scene.trace(dir_x , dir_y  , dir_z);
+  //     framebuffer[i + j * Width] = pix_col;
+  //   }
+  // }
+
+
+//smooth correction
+  for (size_t j = 0; j < Height; j++) {
+    for (size_t i = 0; i < Width; i++)  {
+      float eps[7] = {0.6,-0.57,0.7,-0.4,0.4,-0.5,0.3};
+
+      float r_sum = 0.0;
+      float g_sum = 0.0;
+      float b_sum = 0.0;
       float dir_x = 0.0;
       float dir_y = 0.0;
       float dir_z = 0.0;
+      float temp_i = i;
+      float temp_j = j;
 
       dir_x += (i + 0.5) - Width / 2.;
       dir_y += - (j + 0.5) + Height / 2.;
       dir_z += - Height / (2. * tan(fov / 2.));
+      for(size_t p = 0; p < 7; p++){
 
-      pix_col = scene.trace(dir_x , dir_y  , dir_z);
-      framebuffer[i + j * Width] = pix_col;
+
+        dir_x += eps[p];
+        dir_y += eps[p];
+        dir_z += eps[p];
+
+        pix_col = scene.trace(dir_x , dir_y, dir_z);
+        r_sum += pix_col.x;
+        g_sum += pix_col.y;
+        b_sum += pix_col.z;
+
+      }
+
+      framebuffer[i + j * Width] = Vec3f(r_sum/7,g_sum/7,b_sum/7);
     }
   }
 
@@ -204,19 +203,21 @@ int main(int argc, const char** argv) {
   //     framebuffer_out[3 * (Width * j + i)].z = bSum;
   //   }
   // }
-  //make_norm(framebuffer, Width, Height);
 
-  std::ofstream ofs; // save the framebuffer to file
-  ofs.open(outFilePath,std::ios::binary);
-  ofs << "P6\n" << Width << " " << Height << "\n255\n";
+  uint8_t *pixels = new uint8_t[Width * Height * 3];
+
   for (size_t i = 0; i < Height * Width; ++i) {
-      Vec3f &c = framebuffer[i];
-      float max = std::max(c[0], std::max(c[1], c[2]));
-      if (max>1) c = c*(1. / max);
-      for (size_t j = 0; j < 3; j++) {
-          ofs << (char)(255 * std::max(0.f, std::min(1.f, framebuffer[i][j])));
-      }
-  }
-  ofs.close();
+       Vec3f &c = framebuffer[i];
+       float max = std::max(c[0], std::max(c[1], c[2]));
+       if (max > 1) c = c * (1. / max);
+       for (size_t j = 0; j < 3; j++) {
+           pixels[i*3+j] = (char)(255 * std::max(0.f, std::min(1.f, framebuffer[i][j])));
+       }
+   }
+
+  stbi_write_bmp("ou4.bmp", Width, Height, 3 ,pixels);
+  delete [] pixels;
+
+
   return 0;
 }
